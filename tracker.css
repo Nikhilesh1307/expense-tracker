@@ -71,7 +71,7 @@ body{
     height:50px;
     border-radius:50%;
 }
-.delete-btn hover{
+.delete-btn:hover{
     color:red;
 }
 @media only screen and (max-width: 768px) {
