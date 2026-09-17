@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expense Tracker</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./tracker.css">
+  </head>
+
+  <body>
+
+    <div class="header">
+        <p class="m-0">
+            Expense<br>Tracker
+            <img src="./spending.png" alt="" width="35px">
+        </p>
+    </div>
+
+    <div class="ip-form">
+
+        <div class="form-floating inputs">
+            <input type="date" class="form-control date-input" id="floatingInput" placeholder="Date">
+            <label for="floatingInput">Date</label>
+        </div>
+
+        <div class="form-floating inputs">
+            <input type="text" class="form-control amt-input" id="floatingInput" placeholder="Amount">
+            <label for="floatingInput">Amount</label>
+        </div>
+
+        <select class="form-select inputs trans-type" aria-label="Transaction Type">
+            <option selected>Transaction Type</option>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+        </select>
+
+        <button class="btn" id="add-btn" onclick="addRow()">+</button>
+
+    </div>
+
+    <div class="cards mt-4">
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title m-0">
+                    Total Income
+                    <img src="./wallet-filled-money-tool.png" alt="" width="35px">
+                </h5>
+
+                <h1 class="m-0">
+                    <img src="./currency (2).png" alt="" width="35px">
+                    <span id="t-inc" class="m-0" style="color:rgb(33, 244, 33)">0</span>
+                </h1>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title m-0">
+                    Total Expenses
+                    <img src="./expenses.png" alt="" width="40px">
+                </h5>
+
+                <h1 class="m-0">
+                    <img src="./currency (2).png" alt="" width="35px">
+                    <span id="exp" class="m-0" style="color:red">0</span>
+                </h1>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title m-0">
+                    Balance
+                    <img src="./rupee.png" alt="" width="35px">
+                </h5>
+
+                <h1 class="m-0">
+                    <img src="./currency (2).png" alt="" width="35px">
+                    <span id="bal" class="m-0">0</span>
+                </h1>
+            </div>
+        </div>
+
+    </div>
+
+    <table class="tble mt-3" id="table">
+
+        <tr id="header-row">
+            <th>Amount</th>
+            <th>Transaction Type</th>
+            <th>Transaction Date</th>
+            <th>Action</th>
+        </tr>
+
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForClyvwx9J09JcYn3nv7wiPVlz7YYwJrVkXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD4hNIPjVpV9k/Zjvgyol6VFvRkX/vR+VcjQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+
+    <script>
+
+        let table = document.getElementById('table');
+
+        function addRow(){
+
+            let date = document.getElementsByClassName('date-input')[0].value;
+            let amount = document.getElementsByClassName('amt-input')[0].value;
+            let transType = document.getElementsByClassName('trans-type')[0].value;
+
+            if(date == '' || amount == '' || transType == 'Transaction Type'){
+                return;
+            }
+
+            let row = document.createElement('tr');
+
+            let amtCell = document.createElement('td');
+            amtCell.innerText = amount;
+
+            let transCell = document.createElement('td');
+            transCell.innerText = transType;
+
+            let dateCell = document.createElement('td');
+            dateCell.innerText = date;
+
+            let binCell = document.createElement('td');
+
+            let delBtn = document.createElement('button');
+            let delImage = document.createElement('img');
+
+            delImage.src = './recycle-bin.png';
+            delImage.style.width = '35px';
+
+            delBtn.classList.add('delete-btn');
+            delBtn.classList.add('btn');
+            delBtn.classList.add('btn-md');
+
+            delBtn.appendChild(delImage);
+
+            delBtn.onclick = () => deleteRow(row);
+
+            binCell.appendChild(delBtn);
+
+            row.appendChild(amtCell);
+            row.appendChild(transCell);
+            row.appendChild(dateCell);
+            row.appendChild(binCell);
+
+            table.appendChild(row);
+
+            document.querySelector('.date-input').value = '';
+            document.querySelector('.amt-input').value = '';
+            document.querySelector('.trans-type').value = 'Transaction Type';
+
+            let totalIncome = parseFloat(document.getElementById('t-inc').innerText);
+            let totalExpense = parseFloat(document.getElementById('exp').innerText);
+            let totalBalance = parseFloat(document.getElementById('bal').innerText);
+            let amountValue = parseFloat(amount);
+
+            if(transType == "Income"){
+                totalIncome += amountValue;
+                totalBalance += amountValue;
+            }
+            else if(transType == "Expense"){
+                totalExpense += amountValue;
+                totalBalance -= amountValue;
+            }
+
+            document.getElementById('t-inc').innerText = totalIncome;
+            document.getElementById('exp').innerText = totalExpense;
+            document.getElementById('bal').innerText = totalBalance;
+
+            BalanceColor();
+        }
+
+        function deleteRow(row){
+
+            let amount = parseFloat(row.cells[0].innerText);
+            let transType = row.cells[1].innerText;
+
+            let totalIncome = parseFloat(document.getElementById('t-inc').innerText);
+            let totalExpense = parseFloat(document.getElementById('exp').innerText);
+            let totalBalance = parseFloat(document.getElementById('bal').innerText);
+
+            if(transType === "Income"){
+                totalIncome -= amount;
+                totalBalance -= amount;
+            }
+            else if(transType === "Expense"){
+                totalExpense -= amount;
+                totalBalance += amount;
+            }
+
+            document.getElementById('t-inc').innerText = totalIncome;
+            document.getElementById('exp').innerText = totalExpense;
+            document.getElementById('bal').innerText = totalBalance;
+
+            row.remove();
+
+            BalanceColor();
+        }
+
+        function BalanceColor(){
+
+            let bal = document.getElementById('bal');
+            let balVal = parseFloat(bal.innerText);
+
+            if(balVal < 0){
+                bal.style.color = 'red';
+            }
+            else if(balVal > 0){
+                bal.style.color = 'rgb(33,244,33)';
+            }
+            else{
+                bal.style.color = 'white';
+            }
+        }
+
+    </script>
+
+  </body>
+</html>
