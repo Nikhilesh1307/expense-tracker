@@ -117,7 +117,7 @@
 
             let date = document.getElementsByClassName('date-input')[0].value;
 const today = new Date().toISOString().split('T')[0];
-document.getElementsByClassName("date-input")[0].max = today;
+document.querySelector(".date-input").max = today;
             let amount = document.getElementsByClassName('amt-input')[0].value;
             let transType = document.getElementsByClassName('trans-type')[0].value;
 
